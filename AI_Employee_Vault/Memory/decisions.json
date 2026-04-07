@@ -1,0 +1,146 @@
+[
+  {
+    "task": "FILE_TEST_001.md",
+    "type": "approval_check",
+    "decision": "requires_approval=False",
+    "timestamp": "2026-04-06T23:56:48.243377"
+  },
+  {
+    "task": "FILE_TEST_001.md",
+    "type": "executed_directly",
+    "decision": "communication",
+    "timestamp": "2026-04-06T23:56:48.282787"
+  },
+  {
+    "task": "post.md",
+    "type": "approval_check",
+    "decision": "requires_approval=False",
+    "timestamp": "2026-04-07T00:17:45.653363"
+  },
+  {
+    "task": "post.md",
+    "type": "executed_directly",
+    "decision": "communication",
+    "timestamp": "2026-04-07T00:17:45.693245"
+  },
+  {
+    "task": "Check1.md",
+    "type": "approval_check",
+    "decision": "requires_approval=False",
+    "timestamp": "2026-04-07T00:23:55.694600"
+  },
+  {
+    "task": "Check1.md",
+    "type": "executed_directly",
+    "decision": "communication",
+    "timestamp": "2026-04-07T00:23:55.729901"
+  },
+  {
+    "task": "Check1.md",
+    "type": "approval_check",
+    "decision": "requires_approval=False",
+    "timestamp": "2026-04-07T00:24:39.335613"
+  },
+  {
+    "task": "Check1.md",
+    "type": "executed_directly",
+    "decision": "other",
+    "timestamp": "2026-04-07T00:24:39.370487"
+  },
+  {
+    "task": "check1.md",
+    "type": "approval_check",
+    "decision": "requires_approval=True",
+    "timestamp": "2026-04-07T00:58:45.357129"
+  },
+  {
+    "task": "check1.md",
+    "type": "status",
+    "decision": "pending_approval",
+    "timestamp": "2026-04-07T00:58:45.457396"
+  },
+  {
+    "task": "check1.md",
+    "type": "approval_check",
+    "decision": "requires_approval=True",
+    "timestamp": "2026-04-07T00:59:53.398980"
+  },
+  {
+    "task": "check1.md",
+    "type": "status",
+    "decision": "pending_approval",
+    "timestamp": "2026-04-07T00:59:53.436788"
+  },
+  {
+    "task": "check1.md",
+    "type": "approval_check",
+    "decision": "requires_approval=True",
+    "timestamp": "2026-04-07T01:00:39.179749"
+  },
+  {
+    "task": "check1.md",
+    "type": "status",
+    "decision": "pending_approval",
+    "timestamp": "2026-04-07T01:00:39.255880"
+  },
+  {
+    "task": "check1.md",
+    "type": "approval_check",
+    "decision": "requires_approval=True",
+    "timestamp": "2026-04-07T01:01:27.949726"
+  },
+  {
+    "task": "check1.md",
+    "type": "status",
+    "decision": "pending_approval",
+    "timestamp": "2026-04-07T01:01:28.022659"
+  },
+  {
+    "task": "Check3.md",
+    "type": "approval_check",
+    "decision": "requires_approval=True",
+    "timestamp": "2026-04-07T20:45:49.184314"
+  },
+  {
+    "task": "Check3.md",
+    "type": "status",
+    "decision": "pending_approval",
+    "timestamp": "2026-04-07T20:45:49.284391"
+  },
+  {
+    "task": "Check3.md",
+    "type": "approval_check",
+    "decision": "requires_approval=True",
+    "timestamp": "2026-04-07T20:46:38.130143"
+  },
+  {
+    "task": "Check3.md",
+    "type": "status",
+    "decision": "pending_approval",
+    "timestamp": "2026-04-07T20:46:38.263713"
+  },
+  {
+    "task": "Check3.md",
+    "type": "approval_check",
+    "decision": "requires_approval=True",
+    "timestamp": "2026-04-07T20:47:30.763654"
+  },
+  {
+    "task": "Check3.md",
+    "type": "status",
+    "decision": "pending_approval",
+    "timestamp": "2026-04-07T20:47:30.899357"
+  },
+  {
+    "task": "Check3.md",
+    "type": "approval_check",
+    "decision": "requires_approval=True",
+    "timestamp": "2026-04-07T20:48:17.248344"
+  },
+  {
+    "task": "Check3.md",
+    "type": "status",
+    "decision": "pending_approval",
+    "timestamp": "2026-04-07T20:48:17.360016"
+  }
+]

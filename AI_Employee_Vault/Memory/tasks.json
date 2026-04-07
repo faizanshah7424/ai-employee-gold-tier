@@ -1,0 +1,87 @@
+[
+  {
+    "task": "FILE_TEST_001.md",
+    "content": "---\ntype: task\nsource: manual\nstatus: new\n---\n\nCreate a LinkedIn post about AI automation trends.",
+    "timestamp": "2026-04-06T23:56:34.916979"
+  },
+  {
+    "task": "FILE_TEST_001.md",
+    "content": "```markdown\n---\ntype: plan\nstatus: pending\nrequires_approval: false\ncreated: 2026-04-07T10:00:00\n---\n\n# Plan: Create LinkedIn Post About AI Automation Trends\n\n## Objective\nCreate a LinkedIn post discussing the latest trends in AI automation to increase brand visibility and engage with industry professionals.\n\n## Steps\n- [ ] Research current AI automation trends\n- [ ] Write the post content including relevant statistics and examples\n- [ ] Draft the post with engaging visuals and hashtags\n- [ ] Approve the post internally\n- [ ] Publish the post on LinkedIn\n\n## Approval Required\nNo approval is required for this task.\n\n## Files to Create\n- /Dashboard.md (for updates)\n- /Logs/post_creation_log.md (log of actions taken)\n```\n\n### Justification:\n- **Objective**: The objective is clear and aligned with the business goal of increasing brand visibility and engaging with industry professionals.\n- **Steps**:\n  1. **Research Current Trends**: Gathering information ensures the post is up-to-date and ",
+    "timestamp": "2026-04-06T23:56:48.247926"
+  },
+  {
+    "task": "post.md",
+    "content": "Create a LinkedIn post about AI future trends",
+    "timestamp": "2026-04-07T00:17:31.210882"
+  },
+  {
+    "task": "post.md",
+    "content": "```markdown\n---\ntype: plan\nstatus: pending\nrequires_approval: false\ncreated: 2026-04-07T00:30:00\n---\n\n# Plan: Create LinkedIn Post About AI Future Trends\n\n## Objective\nTo create a LinkedIn post about the future trends in AI technology, highlighting key developments and their potential impacts on various industries.\n\n## Steps\n- [ ] Research current and upcoming AI trends.\n- [ ] Draft the content for the LinkedIn post.\n- [ ] Review the draft for accuracy and alignment with our business goals.\n- [ ] Schedule the post for publication.\n- [ ] Share the post in the appropriate LinkedIn group(s) or community.\n- [ ] Monitor the post\u2019s engagement and provide feedback.\n\n## Approval Required\nApproval is not required for this task as it does not involve sensitive information or external communications.\n\n## Files to Create\n- /Pending_Approval/post_future_trends.md (if approval needed, but not in this case)\n```\n\n### Justification\n- **Research Current and Upcoming AI Trends:** This step ensures that t",
+    "timestamp": "2026-04-07T00:17:45.657728"
+  },
+  {
+    "task": "Check1.md",
+    "content": "Create Linkedin Post A",
+    "timestamp": "2026-04-07T00:23:46.566187"
+  },
+  {
+    "task": "Check1.md",
+    "content": "```markdown\n---\ntype: plan\nstatus: pending\nrequires_approval: false\ncreated: 2026-04-07T10:15:00\n---\n\n# Plan: Create LinkedIn Post A\n\n## Objective\nCreate a LinkedIn post on the topic of AI future trends, discussing the latest developments and their impact on business.\n\n## Steps\n- [ ] Define the key points and structure of the post\n- [ ] Research and gather relevant information and examples\n- [ ] Write the post content\n- [ ] Review and refine the content\n- [ ] Post the content on LinkedIn\n\n## Approval Required\nNo approval required for this task.\n\n## Files to Create\n- /Pending_Approval/post_A.md (if approval needed, although not required in this case)\n```\n\n### Detailed Explanation:\n\n1. **Define the key points and structure of the post**:\n   - Identify the main topics to cover, such as recent AI advancements, their benefits, and potential challenges.\n\n2. **Research and gather relevant information and examples**:\n   - Collect data from credible sources such as industry reports, press relea",
+    "timestamp": "2026-04-07T00:23:55.698499"
+  },
+  {
+    "task": "Check1.md",
+    "content": "Create Linkedin Post About AI Automation",
+    "timestamp": "2026-04-07T00:24:25.908626"
+  },
+  {
+    "task": "Check1.md",
+    "content": "```markdown\n---\ntype: plan\nstatus: pending\nrequires_approval: false\ncreated: 2026-04-07T01:00:00\n---\n\n# Plan: Create LinkedIn Post About AI Automation\n\n## Objective\nTo create a LinkedIn post highlighting recent trends and benefits of AI automation, increasing our visibility and engaging with industry professionals.\n\n## Steps\n- [ ] Research current AI automation trends and their impact on businesses.\n    - *Time Estimate:* 1 hour\n- [ ] Draft the content for the LinkedIn post.\n    - *Time Estimate:* 30 minutes\n- [ ] Proofread the draft for clarity, accuracy, and tone.\n    - *Time Estimate:* 30 minutes\n- [ ] Schedule the post to be published at a strategically chosen time.\n    - *Time Estimate:* 15 minutes\n- [ ] Share the post with the internal team for feedback.\n    - *Time Estimate:* 15 minutes\n- [ ] Publish the post on LinkedIn.\n    - *Time Estimate:* 10 minutes\n\n## Approval Required\nApproval is not required for this task as it involves creating and publishing content that does not aff",
+    "timestamp": "2026-04-07T00:24:39.338716"
+  },
+  {
+    "task": "check1.md",
+    "content": "Create one more Linkedin post about AgenticAI",
+    "timestamp": "2026-04-07T00:58:41.820108"
+  },
+  {
+    "task": "check1.md",
+    "content": "Create one more Linkedin post about AgenticAI",
+    "timestamp": "2026-04-07T00:59:38.997661"
+  },
+  {
+    "task": "check1.md",
+    "content": "Create one more Linkedin post about AgenticAI",
+    "timestamp": "2026-04-07T01:00:23.479988"
+  },
+  {
+    "task": "check1.md",
+    "content": "Create one more Linkedin post about AgenticAI",
+    "timestamp": "2026-04-07T01:01:09.332820"
+  },
+  {
+    "task": "Check3.md",
+    "content": "Create a ",
+    "timestamp": "2026-04-07T20:44:43.533548"
+  },
+  {
+    "task": "Check3.md",
+    "content": "Create a ",
+    "timestamp": "2026-04-07T20:45:40.064368"
+  },
+  {
+    "task": "Check3.md",
+    "content": "Create a ",
+    "timestamp": "2026-04-07T20:46:19.362829"
+  },
+  {
+    "task": "Check3.md",
+    "content": "Create a ",
+    "timestamp": "2026-04-07T20:47:08.370978"
+  },
+  {
+    "task": "Check3.md",
+    "content": "Create a ",
+    "timestamp": "2026-04-07T20:48:00.999646"
+  }
+]
