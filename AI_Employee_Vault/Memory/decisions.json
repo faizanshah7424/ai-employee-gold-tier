@@ -142,5 +142,17 @@
     "type": "status",
     "decision": "pending_approval",
     "timestamp": "2026-04-07T20:48:17.360016"
+  },
+  {
+    "task": "performance analysis task",
+    "type": "approval_check",
+    "decision": "requires_approval=False",
+    "timestamp": "2026-04-08T23:31:24.303090"
+  },
+  {
+    "task": "client account task",
+    "type": "approval_check",
+    "decision": "requires_approval=True",
+    "timestamp": "2026-04-08T23:32:14.917186"
   }
 ]

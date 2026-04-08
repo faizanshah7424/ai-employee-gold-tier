@@ -1,12 +1,18 @@
 """
-Agent - Gold Tier Implementation
+Agent - Platinum Tier Implementation
+
+Multi-Agent System:
+- PlannerAgent: Creates detailed action plans
+- ReviewerAgent: Intelligent decision-making (approval_required, execute_directly, reject)
+- ExecutorAgent: Executes approved actions
 
 Lifecycle:
 Inbox → Needs_Action → Plans → Pending_Approval → Approved → Done
 
-Gold Features:
+Platinum Features:
+- Multi-agent architecture
+- Intelligent decision-making
 - Memory Manager Integration
-- Decision Tracking
 - Ralph Wiggum Loop for autonomous retry
 - Retry + Failure handling with /Failed folder
 - Idempotent execution (no duplicate processing)
@@ -16,7 +22,8 @@ from datetime import datetime
 from skills import get_skill
 from memory_manager import save_task, save_decision, get_task_decisions
 from ralph_wiggum import run_ralph_loop
-from retry_handler import move_to_failed, with_retry
+from retry_handler import move_to_failed
+from multi_agent import run_multi_agent, ReviewerAgent
 
 VAULT = Path("AI_Employee_Vault")
 
@@ -28,6 +35,7 @@ APPROVED = VAULT / "Approved"
 DONE = VAULT / "Done"
 LOGS = VAULT / "Logs"
 FAILED = VAULT / "Failed"
+REJECTED = VAULT / "Rejected"
 
 
 # =========================
@@ -50,7 +58,7 @@ def safe_write(file_path: Path, content: str):
 # =========================
 
 def ensure_folders():
-    for folder in [NEEDS_ACTION, PLANS, PENDING_APPROVAL, APPROVED, DONE, LOGS, FAILED]:
+    for folder in [NEEDS_ACTION, PLANS, PENDING_APPROVAL, APPROVED, DONE, LOGS, FAILED, REJECTED]:
         folder.mkdir(exist_ok=True)
 
 
@@ -97,13 +105,109 @@ def move_to_done(file_path: Path, prefix: str = ""):
         file_path.rename(dest)
         print(f"[Agent] Moved to Done: {new_name}")
     except Exception as e:
-        # Cross-device or locked - copy and delete
         try:
             safe_write(dest, safe_read(file_path))
             file_path.unlink()
             print(f"[Agent] Copied to Done: {new_name}")
         except Exception as e2:
             print(f"[Agent] Error moving to Done: {e2}")
+
+
+def move_to_rejected(task_file: Path, reason: str):
+    """Move task to Rejected folder with reason"""
+    REJECTED.mkdir(exist_ok=True)
+
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    rejected_file = REJECTED / f"REJECTED_{task_file.stem}_{timestamp}.md"
+
+    content = f"""---
+type: rejected
+original_file: {task_file.name}
+reason: {reason}
+timestamp: {datetime.now().isoformat()}
+status: rejected
+---
+
+# Rejected Task
+
+**Original File:** {task_file.name}
+**Reason:** {reason}
+**Rejected At:** {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+
+## Original Content
+
+"""
+
+    try:
+        content += safe_read(task_file)
+    except Exception:
+        content += "Unable to read original content."
+
+    content += f"""
+
+---
+*Rejected by ReviewerAgent*
+"""
+
+    rejected_file.write_text(content, encoding="utf-8")
+    task_file.unlink()
+
+    print(f"[Agent] Moved to Rejected: {rejected_file.name}")
+    log_action("task_rejected", f"{task_file.name}: {reason}", "rejected")
+
+
+# =========================
+# APPROVAL CREATION
+# =========================
+
+def create_approval_request(task_file: Path, plan_content: str, reason: str, action_type: str) -> bool:
+    """Create approval request file in Pending_Approval"""
+    try:
+        timestamp = datetime.now()
+        approval_file = PENDING_APPROVAL / f"APPROVAL_{task_file.stem}_{timestamp.strftime('%Y%m%d%H%M%S')}.md"
+
+        content = f"""---
+type: approval_request
+action_type: {action_type}
+source_task: {task_file.name}
+created: {timestamp.isoformat()}
+expires: {timestamp.replace(day=timestamp.day + 1).isoformat()}
+status: pending
+reason: {reason}
+---
+
+# Approval Required
+
+**Action Type:** {action_type}
+**Source Task:** {task_file.name}
+**Created:** {timestamp.strftime("%Y-%m-%d %H:%M:%S")}
+**Expires:** {timestamp.replace(day=timestamp.day + 1).strftime("%Y-%m-%d %H:%M:%S")}
+
+## Reason for Approval
+{reason}
+
+## Proposed Plan
+{plan_content}
+
+---
+
+## Instructions
+
+**To Approve:** Move this file to the `/Approved` folder
+**To Reject:** Move this file to the `/Rejected` folder
+
+*Once approved, the orchestrator will execute the proposed actions.*
+"""
+
+        approval_file.write_text(content, encoding="utf-8")
+        print(f"[Agent] Approval request created: {approval_file.name}")
+        log_action("approval_request", f"Created for {task_file.name}", "pending")
+        return True
+
+    except Exception as e:
+        print(f"[Agent] Error creating approval request: {e}")
+        log_action("error", f"Failed to create approval: {e}", "error")
+        return False
 
 
 # =========================
@@ -140,7 +244,7 @@ def execute_direct_action(task_file: Path, plan_content: str, action_type: str):
 def _process_task_internal(task_file: Path) -> bool:
     """
     Internal task processing - called by Ralph Loop
-    This is the actual work function
+    Uses multi-agent system with ReviewerAgent decision intelligence
     """
     print(f"[Agent] Processing: {task_file.name}")
 
@@ -162,7 +266,19 @@ def _process_task_internal(task_file: Path) -> bool:
         print(f"[Agent] Skipping - already completed")
         return True
 
-    content = safe_read(task_file)
+    # Read task content
+    try:
+        content = safe_read(task_file)
+    except Exception as e:
+        print(f"[Agent] Error reading task: {e}")
+        return False
+
+    # Check if task is empty or too short
+    if len(content.strip()) < 10:
+        print(f"[Agent] Task too short, rejecting")
+        move_to_rejected(task_file, "Task content too short to process")
+        save_decision(task_file.name, "rejected", "content_too_short")
+        return True  # Returning True because rejection is a valid outcome
 
     # GOLD: Store raw task in memory
     save_task(task_file.name, content)
@@ -171,67 +287,64 @@ def _process_task_internal(task_file: Path) -> bool:
     past = get_task_decisions(task_file.name)
 
     # =========================
-    # SKILL 1: CREATE PLAN
+    # MULTI-AGENT SYSTEM
     # =========================
-    plan_skill = get_skill("create_plan")
-    plan_result = plan_skill.execute(content, str(task_file))
+    plan_file, decision = run_multi_agent(task_file)
 
-    if plan_result["status"] != "success":
-        raise Exception(f"Plan creation failed: {plan_result.get('message', 'Unknown')}")
-
-    plan_file = Path(plan_result["plan_file"])
     plan_content = safe_read(plan_file)
 
-    # =========================
-    # SKILL 2: ANALYZE APPROVAL
-    # =========================
-    analyze = get_skill("analyze_for_approval")
-    approval_info = analyze.execute(content, plan_content)
+    # Read structured decision output
+    reviewer_decision = decision.get("decision", "approval_required")
+    reason = decision.get("reason", "Unknown reason")
+    confidence = decision.get("confidence", 0.50)
+    action_type = decision.get("action_type", "general")
 
-    requires_approval = approval_info.get("requires_approval", True)
-    action_type = approval_info.get("action_type", "general")
+    # Print structured decision for audit visibility
+    print(f"\n{'='*60}")
+    print(f"[Agent] ReviewerAgent Decision: {reviewer_decision}")
+    print(f"[Agent] Reason: {reason}")
+    print(f"[Agent] Confidence: {confidence:.2f}")
+    print(f"{'='*60}\n")
 
     # =========================
     # DECISION MEMORY (GOLD)
     # =========================
     save_decision(
         task_file.name,
-        "approval_check",
-        f"requires_approval={requires_approval}"
+        "reviewer_decision",
+        f"decision={reviewer_decision}, confidence={confidence:.2f}, reason={reason}"
     )
 
     # =========================
-    # APPROVAL FLOW
+    # LOG DECISION WITH REASON (AUDIT TRAIL)
     # =========================
-    if requires_approval:
-        approval_skill = get_skill("create_approval_request")
+    log_action(
+        "reviewer_decision",
+        f"Task: {task_file.name} | Decision: {reviewer_decision} | Confidence: {confidence:.2f} | Reason: {reason}",
+        reviewer_decision
+    )
 
-        result = approval_skill.execute(
-            str(task_file),
-            plan_content,
-            approval_info.get("reason", "Approval required"),
-            action_type
-        )
+    # =========================
+    # HANDLE DECISION
+    # =========================
+    if reviewer_decision == "approval_required":
+        # Create approval request
+        success = create_approval_request(task_file, plan_content, reason, action_type)
 
-        if result["status"] == "success":
+        if success:
             print(f"[Agent] Waiting for approval")
-
-            log_action(
-                "task_pending",
-                f"{task_file.name} waiting for approval",
-                "pending_approval"
-            )
-
-            # GOLD: Save decision
             save_decision(task_file.name, "status", "pending_approval")
-    else:
+        else:
+            raise Exception("Failed to create approval request")
+
+    elif reviewer_decision == "execute_directly":
+        # Execute directly without approval
         execute_direct_action(task_file, plan_content, action_type)
 
-        log_action(
-            "task_complete",
-            f"{task_file.name} executed directly",
-            "completed"
-        )
+    elif reviewer_decision == "reject":
+        # Reject the task
+        move_to_rejected(task_file, reason)
+        save_decision(task_file.name, "status", "rejected")
 
     # =========================
     # SKILL 3: DASHBOARD
